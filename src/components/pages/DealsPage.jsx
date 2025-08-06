@@ -104,14 +104,15 @@ if (dealModal.deal) {
     }
   }
 
-  const handleDeleteDeal = async (dealId) => {
+const handleDeleteDeal = async (dealId) => {
     if (!window.confirm("Are you sure you want to delete this deal?")) return
 
     try {
-const success = await dealService.delete(dealId)
+      const success = await dealService.delete(dealId)
       if (success) {
-      setDeals(prev => prev.filter(d => d.Id !== dealId))
-      toast.success("Deal deleted successfully")
+        setDeals(prev => prev.filter(d => d.Id !== dealId))
+        toast.success("Deal deleted successfully")
+      }
     } catch (err) {
       console.error("Error deleting deal:", err)
       toast.error("Failed to delete deal")
