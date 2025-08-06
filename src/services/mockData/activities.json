@@ -1,0 +1,122 @@
+[
+  {
+    "Id": 1,
+    "type": "call",
+    "description": "Initial discovery call to understand CRM requirements",
+    "contactId": 1,
+    "dealId": 1,
+    "dueDate": null,
+    "completed": true,
+    "createdAt": "2024-01-15T10:30:00.000Z"
+  },
+  {
+    "Id": 2,
+    "type": "email",
+    "description": "Sent proposal document with pricing details",
+    "contactId": 1,
+    "dealId": 1,
+    "dueDate": null,
+    "completed": true,
+    "createdAt": "2024-01-18T14:20:00.000Z"
+  },
+  {
+    "Id": 3,
+    "type": "meeting",
+    "description": "Product demo scheduled for financial dashboard",
+    "contactId": 2,
+    "dealId": 2,
+    "dueDate": "2024-01-25",
+    "completed": false,
+    "createdAt": "2024-01-20T09:15:00.000Z"
+  },
+  {
+    "Id": 4,
+    "type": "note",
+    "description": "Contact expressed interest in analytics features",
+    "contactId": 3,
+    "dealId": 3,
+    "dueDate": null,
+    "completed": true,
+    "createdAt": "2024-01-18T16:45:00.000Z"
+  },
+  {
+    "Id": 5,
+    "type": "task",
+    "description": "Follow up on manufacturing process requirements",
+    "contactId": 4,
+    "dealId": 4,
+    "dueDate": "2024-01-28",
+    "completed": false,
+    "createdAt": "2024-01-22T11:30:00.000Z"
+  },
+  {
+    "Id": 6,
+    "type": "call",
+    "description": "Closing call - deal won!",
+    "contactId": 6,
+    "dealId": 6,
+    "dueDate": null,
+    "completed": true,
+    "createdAt": "2024-01-20T15:45:00.000Z"
+  },
+  {
+    "Id": 7,
+    "type": "email",
+    "description": "Sent healthcare compliance documentation",
+    "contactId": 7,
+    "dealId": 7,
+    "dueDate": null,
+    "completed": true,
+    "createdAt": "2024-01-19T13:20:00.000Z"
+  },
+  {
+    "Id": 8,
+    "type": "meeting",
+    "description": "Risk assessment requirements gathering",
+    "contactId": 8,
+    "dealId": 8,
+    "dueDate": "2024-01-26",
+    "completed": false,
+    "createdAt": "2024-01-21T10:15:00.000Z"
+  },
+  {
+    "Id": 9,
+    "type": "call",
+    "description": "Budget confirmation call for education platform",
+    "contactId": 9,
+    "dealId": 9,
+    "dueDate": null,
+    "completed": true,
+    "createdAt": "2024-01-20T14:30:00.000Z"
+  },
+  {
+    "Id": 10,
+    "type": "note",
+    "description": "Lost deal due to budget constraints",
+    "contactId": 10,
+    "dealId": 10,
+    "dueDate": null,
+    "completed": true,
+    "createdAt": "2024-01-25T12:00:00.000Z"
+  },
+  {
+    "Id": 11,
+    "type": "task",
+    "description": "Send contract for signature",
+    "contactId": 9,
+    "dealId": 9,
+    "dueDate": "2024-01-27",
+    "completed": false,
+    "createdAt": "2024-01-22T16:20:00.000Z"
+  },
+  {
+    "Id": 12,
+    "type": "email",
+    "description": "Welcome email sent to new client",
+    "contactId": 6,
+    "dealId": null,
+    "dueDate": null,
+    "completed": true,
+    "createdAt": "2024-01-21T09:30:00.000Z"
+  }
+]

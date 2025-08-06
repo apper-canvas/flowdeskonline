@@ -1,0 +1,102 @@
+[
+  {
+    "Id": 1,
+    "title": "Enterprise CRM Implementation",
+    "value": 45000,
+    "stage": "Proposal",
+    "contactId": 1,
+    "probability": 75,
+    "expectedClose": "2024-02-15",
+    "createdAt": "2024-01-15T09:30:00.000Z"
+  },
+  {
+    "Id": 2,
+    "title": "Financial Dashboard Project",
+    "value": 28000,
+    "stage": "Negotiation",
+    "contactId": 2,
+    "probability": 85,
+    "expectedClose": "2024-02-01",
+    "createdAt": "2024-01-12T11:15:00.000Z"
+  },
+  {
+    "Id": 3,
+    "title": "Startup Analytics Platform",
+    "value": 15000,
+    "stage": "Qualified",
+    "contactId": 3,
+    "probability": 60,
+    "expectedClose": "2024-02-28",
+    "createdAt": "2024-01-18T13:20:00.000Z"
+  },
+  {
+    "Id": 4,
+    "title": "Manufacturing Process Optimization",
+    "value": 35000,
+    "stage": "Lead",
+    "contactId": 4,
+    "probability": 40,
+    "expectedClose": "2024-03-15",
+    "createdAt": "2024-01-10T08:45:00.000Z"
+  },
+  {
+    "Id": 5,
+    "title": "Retail Management System",
+    "value": 22000,
+    "stage": "Lead",
+    "contactId": 5,
+    "probability": 30,
+    "expectedClose": "2024-03-30",
+    "createdAt": "2024-01-22T15:30:00.000Z"
+  },
+  {
+    "Id": 6,
+    "title": "Consulting Services Package",
+    "value": 12000,
+    "stage": "Closed Won",
+    "contactId": 6,
+    "probability": 100,
+    "expectedClose": "2024-01-30",
+    "createdAt": "2024-01-14T10:00:00.000Z"
+  },
+  {
+    "Id": 7,
+    "title": "Healthcare Data Integration",
+    "value": 55000,
+    "stage": "Proposal",
+    "contactId": 7,
+    "probability": 70,
+    "expectedClose": "2024-02-20",
+    "createdAt": "2024-01-16T14:45:00.000Z"
+  },
+  {
+    "Id": 8,
+    "title": "Financial Risk Assessment Tool",
+    "value": 38000,
+    "stage": "Qualified",
+    "contactId": 8,
+    "probability": 55,
+    "expectedClose": "2024-03-01",
+    "createdAt": "2024-01-11T12:30:00.000Z"
+  },
+  {
+    "Id": 9,
+    "title": "Educational Platform Upgrade",
+    "value": 18000,
+    "stage": "Negotiation",
+    "contactId": 9,
+    "probability": 80,
+    "expectedClose": "2024-02-10",
+    "createdAt": "2024-01-19T16:15:00.000Z"
+  },
+  {
+    "Id": 10,
+    "title": "Logistics Tracking System",
+    "value": 25000,
+    "stage": "Closed Lost",
+    "contactId": 10,
+    "probability": 0,
+    "expectedClose": "2024-01-25",
+    "createdAt": "2024-01-13T09:45:00.000Z"
+  }
+]

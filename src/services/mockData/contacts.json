@@ -1,0 +1,102 @@
+[
+  {
+    "Id": 1,
+    "name": "Sarah Chen",
+    "email": "sarah.chen@techflow.com",
+    "phone": "+1 (555) 234-5678",
+    "company": "TechFlow Solutions",
+    "tags": ["enterprise", "technology", "hot-lead"],
+    "createdAt": "2024-01-15T09:30:00.000Z",
+    "lastActivity": "2024-01-20T14:22:00.000Z"
+  },
+  {
+    "Id": 2,
+    "name": "Michael Rodriguez",
+    "email": "m.rodriguez@globalcorp.com",
+    "phone": "+1 (555) 345-6789",
+    "company": "Global Corp",
+    "tags": ["enterprise", "finance"],
+    "createdAt": "2024-01-12T11:15:00.000Z",
+    "lastActivity": "2024-01-19T16:45:00.000Z"
+  },
+  {
+    "Id": 3,
+    "name": "Emily Johnson",
+    "email": "emily.j@startup.io",
+    "phone": "+1 (555) 456-7890",
+    "company": "Startup.io",
+    "tags": ["startup", "technology", "warm-lead"],
+    "createdAt": "2024-01-18T13:20:00.000Z",
+    "lastActivity": "2024-01-21T10:30:00.000Z"
+  },
+  {
+    "Id": 4,
+    "name": "David Kim",
+    "email": "david.kim@innovate.com",
+    "phone": "+1 (555) 567-8901",
+    "company": "Innovate Inc",
+    "tags": ["mid-market", "manufacturing"],
+    "createdAt": "2024-01-10T08:45:00.000Z",
+    "lastActivity": "2024-01-17T12:15:00.000Z"
+  },
+  {
+    "Id": 5,
+    "name": "Lisa Thompson",
+    "email": "lisa.thompson@retail.com",
+    "phone": "+1 (555) 678-9012",
+    "company": "Retail Solutions",
+    "tags": ["retail", "mid-market", "cold-lead"],
+    "createdAt": "2024-01-22T15:30:00.000Z",
+    "lastActivity": "2024-01-22T15:30:00.000Z"
+  },
+  {
+    "Id": 6,
+    "name": "James Wilson",
+    "email": "james.wilson@consulting.co",
+    "phone": "+1 (555) 789-0123",
+    "company": "Wilson Consulting",
+    "tags": ["consulting", "small-business", "warm-lead"],
+    "createdAt": "2024-01-14T10:00:00.000Z",
+    "lastActivity": "2024-01-18T09:20:00.000Z"
+  },
+  {
+    "Id": 7,
+    "name": "Maria Garcia",
+    "email": "maria.garcia@healthtech.com",
+    "phone": "+1 (555) 890-1234",
+    "company": "HealthTech Pro",
+    "tags": ["healthcare", "technology", "hot-lead"],
+    "createdAt": "2024-01-16T14:45:00.000Z",
+    "lastActivity": "2024-01-21T11:30:00.000Z"
+  },
+  {
+    "Id": 8,
+    "name": "Robert Brown",
+    "email": "robert.brown@finance.com",
+    "phone": "+1 (555) 901-2345",
+    "company": "Finance Corp",
+    "tags": ["finance", "enterprise"],
+    "createdAt": "2024-01-11T12:30:00.000Z",
+    "lastActivity": "2024-01-16T14:45:00.000Z"
+  },
+  {
+    "Id": 9,
+    "name": "Jennifer Davis",
+    "email": "jennifer.davis@education.org",
+    "phone": "+1 (555) 012-3456",
+    "company": "EduTech Solutions",
+    "tags": ["education", "non-profit", "warm-lead"],
+    "createdAt": "2024-01-19T16:15:00.000Z",
+    "lastActivity": "2024-01-20T13:20:00.000Z"
+  },
+  {
+    "Id": 10,
+    "name": "Thomas Miller",
+    "email": "thomas.miller@logistics.com",
+    "phone": "+1 (555) 123-4567",
+    "company": "Logistics Plus",
+    "tags": ["logistics", "mid-market", "cold-lead"],
+    "createdAt": "2024-01-13T09:45:00.000Z",
+    "lastActivity": "2024-01-15T11:30:00.000Z"
+  }
+]
