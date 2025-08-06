@@ -23,12 +23,12 @@ const ContactCard = ({ contact, onEdit, onDelete }) => {
         <div className="flex items-start justify-between">
           <div className="flex items-center gap-3">
             <div className="w-12 h-12 rounded-full bg-gradient-to-r from-primary to-secondary flex items-center justify-center text-white font-semibold text-sm">
-              {getInitials(contact.name)}
+{getInitials(contact.Name)}
             </div>
             <div>
-              <h3 className="font-semibold text-gray-900">{contact.name}</h3>
-              {contact.company && (
-                <p className="text-sm text-gray-600">{contact.company}</p>
+<h3 className="font-semibold text-gray-900">{contact.Name}</h3>
+              {contact.company_c && (
+                <p className="text-sm text-gray-600">{contact.company_c}</p>
               )}
             </div>
           </div>
@@ -68,26 +68,26 @@ const ContactCard = ({ contact, onEdit, onDelete }) => {
 
         {/* Contact Info */}
         <div className="space-y-2">
-          {contact.email && (
+{contact.email_c && (
             <div className="flex items-center gap-2 text-sm text-gray-600">
               <ApperIcon name="Mail" size={14} />
-              {contact.email}
+              {contact.email_c}
             </div>
           )}
-          {contact.phone && (
+{contact.phone_c && (
             <div className="flex items-center gap-2 text-sm text-gray-600">
               <ApperIcon name="Phone" size={14} />
-              {contact.phone}
+              {contact.phone_c}
             </div>
           )}
         </div>
 
         {/* Tags */}
-        {contact.tags && contact.tags.length > 0 && (
+{((contact.Tags && contact.Tags.split(',').length > 0) || (contact.tags && contact.tags.length > 0)) && (
           <div className="flex flex-wrap gap-1">
-            {contact.tags.map((tag, index) => (
+            {(contact.Tags ? contact.Tags.split(',') : contact.tags || []).map((tag, index) => (
               <Badge key={index} variant="secondary" className="text-xs">
-                {tag}
+                {tag.trim()}
               </Badge>
             ))}
           </div>
@@ -96,13 +96,13 @@ const ContactCard = ({ contact, onEdit, onDelete }) => {
         {/* Footer */}
         <div className="flex items-center justify-between text-xs text-gray-500">
           <div className="flex items-center gap-1">
-            <ApperIcon name="Calendar" size={12} />
-            Added {format(new Date(contact.createdAt), "MMM dd, yyyy")}
+<ApperIcon name="Calendar" size={12} />
+            Added {format(new Date(contact.createdAt_c || contact.createdAt), "MMM dd, yyyy")}
           </div>
-          {contact.lastActivity && (
+{(contact.lastActivity_c || contact.lastActivity) && (
             <div className="flex items-center gap-1">
               <ApperIcon name="Clock" size={12} />
-              Last {format(new Date(contact.lastActivity), "MMM dd")}
+              Last {format(new Date(contact.lastActivity_c || contact.lastActivity), "MMM dd")}
             </div>
           )}
         </div>

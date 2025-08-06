@@ -1,17 +1,17 @@
-import { useState, useEffect } from "react"
-import { toast } from "react-toastify"
-import Button from "@/components/atoms/Button"
-import SearchBar from "@/components/molecules/SearchBar"
-import ContactCard from "@/components/molecules/ContactCard"
-import ContactModal from "@/components/organisms/ContactModal"
-import ActivityModal from "@/components/organisms/ActivityModal"
-import Loading from "@/components/ui/Loading"
-import Error from "@/components/ui/Error"
-import Empty from "@/components/ui/Empty"
-import ApperIcon from "@/components/ApperIcon"
-import { contactService } from "@/services/api/contactService"
-import { dealService } from "@/services/api/dealService"
-import { activityService } from "@/services/api/activityService"
+import React, { useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import { contactService } from "@/services/api/contactService";
+import { dealService } from "@/services/api/dealService";
+import { activityService } from "@/services/api/activityService";
+import ApperIcon from "@/components/ApperIcon";
+import SearchBar from "@/components/molecules/SearchBar";
+import ContactCard from "@/components/molecules/ContactCard";
+import ActivityModal from "@/components/organisms/ActivityModal";
+import ContactModal from "@/components/organisms/ContactModal";
+import Loading from "@/components/ui/Loading";
+import Error from "@/components/ui/Error";
+import Empty from "@/components/ui/Empty";
+import Button from "@/components/atoms/Button";
 
 const ContactsPage = () => {
   const [contacts, setContacts] = useState([])
@@ -26,7 +26,7 @@ const ContactsPage = () => {
   const loadContacts = async () => {
     try {
       setError("")
-      const data = await contactService.getAll()
+const data = await contactService.getAll()
       setContacts(data)
     } catch (err) {
       console.error("Error loading contacts:", err)
@@ -50,27 +50,36 @@ const ContactsPage = () => {
     loadDeals()
   }, [])
 
-  const allTags = ["all", ...new Set(contacts.flatMap(contact => contact.tags || []))]
+const allTags = ["all", ...new Set(contacts.flatMap(contact => 
+    contact.Tags ? (typeof contact.Tags === 'string' ? contact.Tags.split(',').map(t => t.trim()) : contact.Tags) : 
+    contact.tags || []
+  ))]
 
-  const filteredContacts = contacts.filter(contact => {
-    const matchesSearch = contact.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         contact.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         contact.company?.toLowerCase().includes(searchTerm.toLowerCase())
-    const matchesTag = selectedTag === "all" || (contact.tags && contact.tags.includes(selectedTag))
+const filteredContacts = contacts.filter(contact => {
+    const matchesSearch = contact.Name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         contact.email_c?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         contact.company_c?.toLowerCase().includes(searchTerm.toLowerCase())
+const matchesTag = selectedTag === "all" || 
+                      (contact.Tags && (typeof contact.Tags === 'string' ? contact.Tags.includes(selectedTag) : contact.Tags.includes(selectedTag))) ||
+                      (contact.tags && contact.tags.includes(selectedTag))
     
     return matchesSearch && matchesTag
   })
 
   const handleSaveContact = async (contactData) => {
     try {
-      if (contactModal.contact) {
+if (contactModal.contact) {
         const updatedContact = await contactService.update(contactModal.contact.Id, contactData)
-        setContacts(prev => prev.map(c => c.Id === contactModal.contact.Id ? updatedContact : c))
+        if (updatedContact) {
+          setContacts(prev => prev.map(c => c.Id === contactModal.contact.Id ? updatedContact : c))
+        }
         toast.success("Contact updated successfully")
-      } else {
+} else {
         const newContact = await contactService.create(contactData)
-        setContacts(prev => [...prev, newContact])
-        toast.success("Contact created successfully")
+        if (newContact) {
+          setContacts(prev => [...prev, newContact])
+          toast.success("Contact created successfully")
+        }
       }
       setContactModal({ isOpen: false, contact: null })
     } catch (err) {
@@ -82,27 +91,32 @@ const ContactsPage = () => {
   const handleDeleteContact = async (contactId) => {
     if (!window.confirm("Are you sure you want to delete this contact? This will also delete all related deals and activities.")) return
 
-    try {
-      await contactService.delete(contactId)
-      setContacts(prev => prev.filter(c => c.Id !== contactId))
-      toast.success("Contact deleted successfully")
+try {
+      const success = await contactService.delete(contactId)
+      if (success) {
+        setContacts(prev => prev.filter(c => c.Id !== contactId))
+        toast.success("Contact deleted successfully")
+      }
     } catch (err) {
       console.error("Error deleting contact:", err)
       toast.error("Failed to delete contact")
     }
   }
 
-  const handleSaveActivity = async (activityData) => {
+const handleSaveActivity = async (activityData) => {
     try {
       const newActivity = await activityService.create(activityData)
-      
-      // Update the contact's last activity timestamp
-      const contactId = activityData.contactId
-      const contact = contacts.find(c => c.Id === contactId)
-      if (contact) {
-        const updatedContact = { ...contact, lastActivity: new Date().toISOString() }
-        await contactService.update(contactId, updatedContact)
-        setContacts(prev => prev.map(c => c.Id === contactId ? updatedContact : c))
+      if (newActivity) {
+        // Update the contact's last activity timestamp
+        const contactId = activityData.contactId_c || activityData.contactId
+        const contact = contacts.find(c => c.Id === contactId)
+        if (contact) {
+          const updatedContact = { ...contact, lastActivity_c: new Date().toISOString() }
+          const result = await contactService.update(contactId, updatedContact)
+          if (result) {
+            setContacts(prev => prev.map(c => c.Id === contactId ? result : c))
+          }
+        }
       }
       
       toast.success("Activity added successfully")
@@ -154,10 +168,10 @@ const ContactsPage = () => {
               <div className="w-12 h-12 bg-success/10 rounded-lg flex items-center justify-center">
                 <ApperIcon name="Building" size={24} className="text-success" />
               </div>
-              <div>
+<div>
                 <p className="text-sm text-gray-600">Companies</p>
                 <p className="text-2xl font-bold text-gray-900">
-                  {new Set(contacts.filter(c => c.company).map(c => c.company)).size}
+                  {new Set(contacts.map(c => c.company_c).filter(Boolean)).size}
                 </p>
               </div>
             </div>
@@ -168,10 +182,10 @@ const ContactsPage = () => {
               <div className="w-12 h-12 bg-info/10 rounded-lg flex items-center justify-center">
                 <ApperIcon name="Target" size={24} className="text-info" />
               </div>
-              <div>
+<div>
                 <p className="text-sm text-gray-600">Active Deals</p>
                 <p className="text-2xl font-bold text-gray-900">
-                  {deals.filter(d => !d.stage.startsWith("Closed")).length}
+                  {deals.filter(d => !(d.stage_c || d.stage).startsWith("Closed")).length}
                 </p>
               </div>
             </div>

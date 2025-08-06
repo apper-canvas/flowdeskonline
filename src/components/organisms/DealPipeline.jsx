@@ -17,12 +17,12 @@ const DealPipeline = ({ deals = [], contacts = [], onDragEnd, onEditDeal, onDele
   ]
 
   const getDealsByStage = (stage) => {
-    return deals.filter(deal => deal.stage === stage)
+return deals.filter(deal => (deal.stage_c || deal.stage) === stage)
   }
 
   const getStageTotal = (stage) => {
     const stageDeals = getDealsByStage(stage)
-    return stageDeals.reduce((sum, deal) => sum + deal.value, 0)
+return stageDeals.reduce((sum, deal) => sum + (deal.value_c || deal.value || 0), 0)
   }
 
   const handleDragStart = (e, deal) => {
@@ -44,7 +44,7 @@ const DealPipeline = ({ deals = [], contacts = [], onDragEnd, onEditDeal, onDele
 
   const handleDrop = (e, newStage) => {
     e.preventDefault()
-    if (draggedDeal && draggedDeal.stage !== newStage) {
+if (draggedDeal && (draggedDeal.stage_c || draggedDeal.stage) !== newStage) {
       onDragEnd?.(draggedDeal.Id, newStage)
     }
     setDraggedDeal(null)
@@ -102,7 +102,7 @@ const DealPipeline = ({ deals = [], contacts = [], onDragEnd, onEditDeal, onDele
 
             {/* Deal Cards */}
             <div className="space-y-3">
-              {stageDeals.map((deal) => (
+{stageDeals.map((deal) => (
                 <div
                   key={deal.Id}
                   draggable

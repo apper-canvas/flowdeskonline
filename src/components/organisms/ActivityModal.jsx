@@ -1,7 +1,8 @@
-import { useState, useEffect } from "react"
-import Button from "@/components/atoms/Button"
-import FormField from "@/components/molecules/FormField"
-import ApperIcon from "@/components/ApperIcon"
+import React, { useEffect, useState } from "react";
+import ApperIcon from "@/components/ApperIcon";
+import FormField from "@/components/molecules/FormField";
+import Button from "@/components/atoms/Button";
+import Select from "@/components/atoms/Select";
 
 const ActivityModal = ({ 
   isOpen, 
@@ -33,12 +34,12 @@ const ActivityModal = ({
 
   useEffect(() => {
     if (activity) {
-      setFormData({
-        type: activity.type || "note",
-        description: activity.description || "",
-        contactId: activity.contactId?.toString() || "",
-        dealId: activity.dealId?.toString() || "",
-        dueDate: activity.dueDate ? activity.dueDate.split("T")[0] : ""
+setFormData({
+        type: activity.type_c || activity.type || "note",
+        description: activity.description_c || activity.description || "",
+        contactId: (activity.contactId_c?.Id || activity.contactId_c || activity.contactId)?.toString() || "",
+        dealId: (activity.dealId_c?.Id || activity.dealId_c || activity.dealId)?.toString() || "",
+        dueDate: (activity.dueDate_c || activity.dueDate) ? (activity.dueDate_c || activity.dueDate).split("T")[0] : ""
       })
     } else {
       setFormData({
@@ -82,10 +83,13 @@ const ActivityModal = ({
     setLoading(true)
     
     try {
-      const activityData = {
-        ...formData,
-        contactId: parseInt(formData.contactId),
-        dealId: formData.dealId ? parseInt(formData.dealId) : null
+const activityData = {
+        type_c: formData.type,
+        description_c: formData.description,
+        contactId_c: parseInt(formData.contactId),
+        dealId_c: formData.dealId ? parseInt(formData.dealId) : null,
+        dueDate_c: formData.dueDate,
+        completed_c: formData.type === "note" ? true : false
       }
       
       await onSave(activityData)
@@ -97,8 +101,8 @@ const ActivityModal = ({
     }
   }
 
-  const filteredDeals = deals.filter(deal => 
-    !formData.contactId || deal.contactId === parseInt(formData.contactId)
+const filteredDeals = deals.filter(deal => 
+    !formData.contactId || (deal.contactId_c?.Id || deal.contactId_c) === parseInt(formData.contactId)
   )
 
   if (!isOpen) return null
@@ -142,11 +146,11 @@ const ActivityModal = ({
             onChange={(e) => handleInputChange("contactId", e.target.value)}
             placeholder="Select a contact"
             error={errors.contactId}
-          >
+>
             <option value="">Select a contact</option>
             {contacts.map((contact) => (
               <option key={contact.Id} value={contact.Id}>
-                {contact.name} {contact.company && `(${contact.company})`}
+                {contact.name_c || contact.name || `Contact ${contact.Id}`}
               </option>
             ))}
           </FormField>
@@ -160,9 +164,9 @@ const ActivityModal = ({
             error={errors.dealId}
           >
             <option value="">Select a deal (optional)</option>
-            {filteredDeals.map((deal) => (
+{filteredDeals.map((deal) => (
               <option key={deal.Id} value={deal.Id}>
-                {deal.title}
+                {deal.title_c || deal.title}
               </option>
             ))}
           </FormField>

@@ -1,16 +1,16 @@
-import { useState, useEffect } from "react"
-import { toast } from "react-toastify"
-import Button from "@/components/atoms/Button"
-import SearchBar from "@/components/molecules/SearchBar"
-import ActivityItem from "@/components/molecules/ActivityItem"
-import ActivityModal from "@/components/organisms/ActivityModal"
-import Loading from "@/components/ui/Loading"
-import Error from "@/components/ui/Error"
-import Empty from "@/components/ui/Empty"
-import ApperIcon from "@/components/ApperIcon"
-import { activityService } from "@/services/api/activityService"
-import { contactService } from "@/services/api/contactService"
-import { dealService } from "@/services/api/dealService"
+import React, { useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import { activityService } from "@/services/api/activityService";
+import { contactService } from "@/services/api/contactService";
+import { dealService } from "@/services/api/dealService";
+import ApperIcon from "@/components/ApperIcon";
+import SearchBar from "@/components/molecules/SearchBar";
+import ActivityItem from "@/components/molecules/ActivityItem";
+import ActivityModal from "@/components/organisms/ActivityModal";
+import Loading from "@/components/ui/Loading";
+import Error from "@/components/ui/Error";
+import Empty from "@/components/ui/Empty";
+import Button from "@/components/atoms/Button";
 
 const ActivitiesPage = () => {
   const [activities, setActivities] = useState([])
@@ -41,7 +41,7 @@ const ActivitiesPage = () => {
   const loadActivities = async () => {
     try {
       setError("")
-      const data = await activityService.getAll()
+const data = await activityService.getAll()
       setActivities(data)
     } catch (err) {
       console.error("Error loading activities:", err)
@@ -75,31 +75,35 @@ const ActivitiesPage = () => {
     loadDeals()
   }, [])
 
-  const filteredActivities = activities.filter(activity => {
-    const contact = contacts.find(c => c.Id === activity.contactId)
-    const deal = deals.find(d => d.Id === activity.dealId)
+const filteredActivities = activities.filter(activity => {
+    const contact = contacts.find(c => c.Id === (activity.contactId_c?.Id || activity.contactId_c))
+    const deal = deals.find(d => d.Id === (activity.dealId_c?.Id || activity.dealId_c))
     
-    const matchesSearch = activity.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         contact?.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         deal?.title.toLowerCase().includes(searchTerm.toLowerCase())
-    const matchesType = selectedType === "all" || activity.type === selectedType
+    const matchesSearch = (activity.description_c || activity.description).toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         contact?.Name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         (deal?.title_c || deal?.title)?.toLowerCase().includes(searchTerm.toLowerCase())
+const matchesType = selectedType === "all" || (activity.type_c || activity.type) === selectedType
     const matchesStatus = selectedStatus === "all" || 
-                         (selectedStatus === "completed" && activity.completed) ||
-                         (selectedStatus === "pending" && !activity.completed)
+                         (selectedStatus === "completed" && (activity.completed_c || activity.completed)) ||
+                         (selectedStatus === "pending" && !(activity.completed_c || activity.completed))
     
     return matchesSearch && matchesType && matchesStatus
-  }).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+}).sort((a, b) => new Date(b.createdAt_c || b.createdAt) - new Date(a.createdAt_c || a.createdAt))
 
   const handleSaveActivity = async (activityData) => {
     try {
-      if (activityModal.activity) {
+if (activityModal.activity) {
         const updatedActivity = await activityService.update(activityModal.activity.Id, activityData)
-        setActivities(prev => prev.map(a => a.Id === activityModal.activity.Id ? updatedActivity : a))
+        if (updatedActivity) {
+          setActivities(prev => prev.map(a => a.Id === activityModal.activity.Id ? updatedActivity : a))
+        }
         toast.success("Activity updated successfully")
-      } else {
+} else {
         const newActivity = await activityService.create(activityData)
-        setActivities(prev => [newActivity, ...prev])
-        toast.success("Activity created successfully")
+        if (newActivity) {
+          setActivities(prev => [newActivity, ...prev])
+          toast.success("Activity created successfully")
+        }
       }
       setActivityModal({ isOpen: false, activity: null })
     } catch (err) {
@@ -113,9 +117,11 @@ const ActivitiesPage = () => {
       const activity = activities.find(a => a.Id === activityId)
       if (!activity) return
 
-      const updatedActivity = { ...activity, completed: !activity.completed }
-      await activityService.update(activityId, updatedActivity)
-      setActivities(prev => prev.map(a => a.Id === activityId ? updatedActivity : a))
+const updatedActivity = { ...activity, completed_c: !(activity.completed_c || activity.completed) }
+      const result = await activityService.update(activityId, updatedActivity)
+      if (result) {
+        setActivities(prev => prev.map(a => a.Id === activityId ? result : a))
+      }
       toast.success(updatedActivity.completed ? "Activity marked as completed" : "Activity marked as pending")
     } catch (err) {
       console.error("Error updating activity:", err)
@@ -123,11 +129,11 @@ const ActivitiesPage = () => {
     }
   }
 
-  const completedCount = activities.filter(a => a.completed).length
-  const pendingCount = activities.filter(a => !a.completed).length
+const completedCount = activities.filter(a => (a.completed_c || a.completed)).length
+  const pendingCount = activities.filter(a => !(a.completed_c || a.completed)).length
   const todayCount = activities.filter(a => {
     const today = new Date().toDateString()
-    return new Date(a.createdAt).toDateString() === today
+    return new Date(a.createdAt_c || a.createdAt).toDateString() === today
   }).length
 
   if (loading) return <Loading text="Loading activities..." />
@@ -241,8 +247,8 @@ const ActivitiesPage = () => {
               
               <div className="flex items-start gap-4">
                 {/* Timeline Dot */}
-                <div className={`w-2 h-2 rounded-full mt-6 flex-shrink-0 ${
-                  activity.completed ? "bg-success" : "bg-gray-300"
+<div className={`w-2 h-2 rounded-full mt-6 flex-shrink-0 ${
+                  (activity.completed_c || activity.completed) ? "bg-success" : "bg-gray-300"
                 }`}></div>
                 
                 {/* Activity Item */}
@@ -261,11 +267,11 @@ const ActivitiesPage = () => {
                       onClick={() => handleCompleteActivity(activity.Id)}
                       className="flex items-center gap-1 text-xs"
                     >
-                      <ApperIcon 
-                        name={activity.completed ? "RotateCcw" : "Check"} 
+<ApperIcon 
+                        name={(activity.completed_c || activity.completed) ? "RotateCcw" : "Check"} 
                         size={12} 
                       />
-                      {activity.completed ? "Mark Pending" : "Mark Complete"}
+                      {(activity.completed_c || activity.completed) ? "Mark Pending" : "Mark Complete"}
                     </Button>
                     
                     <Button

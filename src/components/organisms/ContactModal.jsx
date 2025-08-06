@@ -17,12 +17,13 @@ const ContactModal = ({ isOpen, onClose, contact = null, onSave }) => {
 
   useEffect(() => {
     if (contact) {
-      setFormData({
-        name: contact.name || "",
-        email: contact.email || "",
-        phone: contact.phone || "",
-        company: contact.company || "",
-        tags: contact.tags ? contact.tags.join(", ") : ""
+setFormData({
+        name: contact.Name || "",
+        email: contact.email_c || "",
+        phone: contact.phone_c || "",
+        company: contact.company_c || "",
+        tags: contact.Tags ? (typeof contact.Tags === 'string' ? contact.Tags : contact.Tags.join(", ")) : 
+              contact.tags ? contact.tags.join(", ") : ""
       })
     } else {
       setFormData({
@@ -66,11 +67,14 @@ const ContactModal = ({ isOpen, onClose, contact = null, onSave }) => {
     setLoading(true)
     
     try {
-      const contactData = {
-        ...formData,
-        tags: formData.tags 
-          ? formData.tags.split(",").map(tag => tag.trim()).filter(tag => tag)
-          : []
+const contactData = {
+        Name: formData.name,
+        email_c: formData.email,
+        phone_c: formData.phone,
+        company_c: formData.company,
+        Tags: formData.tags 
+          ? formData.tags.split(",").map(tag => tag.trim()).filter(tag => tag).join(",")
+          : ""
       }
       
       await onSave(contactData)
@@ -157,7 +161,7 @@ const ContactModal = ({ isOpen, onClose, contact = null, onSave }) => {
             </Button>
             <Button
               type="submit"
-              className="flex-1"
+className="flex-1"
               disabled={loading}
             >
               {loading ? (

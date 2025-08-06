@@ -34,13 +34,13 @@ const DealModal = ({
 
   useEffect(() => {
     if (deal) {
-      setFormData({
-        title: deal.title || "",
-        value: deal.value?.toString() || "",
-        stage: deal.stage || "Lead",
-        contactId: deal.contactId?.toString() || "",
-        probability: deal.probability?.toString() || "50",
-        expectedClose: deal.expectedClose ? deal.expectedClose.split("T")[0] : ""
+setFormData({
+        title: deal.title_c || deal.title || "",
+        value: (deal.value_c || deal.value)?.toString() || "",
+        stage: deal.stage_c || deal.stage || "Lead",
+        contactId: (deal.contactId_c?.Id || deal.contactId_c || deal.contactId)?.toString() || "",
+        probability: (deal.probability_c || deal.probability)?.toString() || "50",
+        expectedClose: (deal.expectedClose_c || deal.expectedClose) ? (deal.expectedClose_c || deal.expectedClose).split("T")[0] : ""
       })
     } else {
       setFormData({
@@ -93,11 +93,13 @@ const DealModal = ({
     setLoading(true)
     
     try {
-      const dealData = {
-        ...formData,
-        value: parseFloat(formData.value),
-        contactId: parseInt(formData.contactId),
-        probability: parseInt(formData.probability)
+const dealData = {
+        title_c: formData.title,
+        value_c: parseFloat(formData.value),
+        stage_c: formData.stage,
+        contactId_c: parseInt(formData.contactId),
+        probability_c: formData.probability,
+        expectedClose_c: formData.expectedClose
       }
       
       await onSave(dealData)
@@ -157,9 +159,9 @@ const DealModal = ({
             error={errors.contactId}
           >
             <option value="">Select a contact</option>
-            {contacts.map((contact) => (
+{contacts.map((contact) => (
               <option key={contact.Id} value={contact.Id}>
-                {contact.name} {contact.company && `(${contact.company})`}
+                {contact.Name} {contact.company_c && `(${contact.company_c})`}
               </option>
             ))}
           </FormField>

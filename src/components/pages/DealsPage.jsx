@@ -1,15 +1,15 @@
-import { useState, useEffect } from "react"
-import { toast } from "react-toastify"
-import Button from "@/components/atoms/Button"
-import SearchBar from "@/components/molecules/SearchBar"
-import DealPipeline from "@/components/organisms/DealPipeline"
-import DealModal from "@/components/organisms/DealModal"
-import Loading from "@/components/ui/Loading"
-import Error from "@/components/ui/Error"
-import Empty from "@/components/ui/Empty"
-import ApperIcon from "@/components/ApperIcon"
-import { dealService } from "@/services/api/dealService"
-import { contactService } from "@/services/api/contactService"
+import React, { useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import { dealService } from "@/services/api/dealService";
+import { contactService } from "@/services/api/contactService";
+import ApperIcon from "@/components/ApperIcon";
+import SearchBar from "@/components/molecules/SearchBar";
+import DealModal from "@/components/organisms/DealModal";
+import DealPipeline from "@/components/organisms/DealPipeline";
+import Loading from "@/components/ui/Loading";
+import Error from "@/components/ui/Error";
+import Empty from "@/components/ui/Empty";
+import Button from "@/components/atoms/Button";
 
 const DealsPage = () => {
   const [deals, setDeals] = useState([])
@@ -33,7 +33,7 @@ const DealsPage = () => {
   const loadDeals = async () => {
     try {
       setError("")
-      const data = await dealService.getAll()
+const data = await dealService.getAll()
       setDeals(data)
     } catch (err) {
       console.error("Error loading deals:", err)
@@ -58,8 +58,8 @@ const DealsPage = () => {
   }, [])
 
   const filteredDeals = deals.filter(deal => {
-    const matchesSearch = deal.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         contacts.find(c => c.Id === deal.contactId)?.name.toLowerCase().includes(searchTerm.toLowerCase())
+const matchesSearch = (deal.title_c || deal.title).toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         contacts.find(c => c.Id === (deal.contactId_c?.Id || deal.contactId_c))?.Name?.toLowerCase().includes(searchTerm.toLowerCase())
     const matchesStage = selectedStage === "all" || deal.stage === selectedStage
     
     return matchesSearch && matchesStage
@@ -67,12 +67,14 @@ const DealsPage = () => {
 
   const handleDragEnd = async (dealId, newStage) => {
     try {
-      const deal = deals.find(d => d.Id === dealId)
+const deal = deals.find(d => d.Id === dealId)
       if (!deal) return
 
-      const updatedDeal = { ...deal, stage: newStage }
-      await dealService.update(dealId, updatedDeal)
-      setDeals(prev => prev.map(d => d.Id === dealId ? updatedDeal : d))
+const updatedDeal = { ...deal, stage_c: newStage }
+      const result = await dealService.update(dealId, updatedDeal)
+      if (result) {
+        setDeals(prev => prev.map(d => d.Id === dealId ? result : d))
+      }
       toast.success(`Deal moved to ${newStage}`)
     } catch (err) {
       console.error("Error updating deal:", err)
@@ -82,14 +84,18 @@ const DealsPage = () => {
 
   const handleSaveDeal = async (dealData) => {
     try {
-      if (dealModal.deal) {
+if (dealModal.deal) {
         const updatedDeal = await dealService.update(dealModal.deal.Id, dealData)
-        setDeals(prev => prev.map(d => d.Id === dealModal.deal.Id ? updatedDeal : d))
+        if (updatedDeal) {
+          setDeals(prev => prev.map(d => d.Id === dealModal.deal.Id ? updatedDeal : d))
+        }
         toast.success("Deal updated successfully")
-      } else {
+} else {
         const newDeal = await dealService.create(dealData)
-        setDeals(prev => [...prev, newDeal])
-        toast.success("Deal created successfully")
+        if (newDeal) {
+          setDeals(prev => [...prev, newDeal])
+          toast.success("Deal created successfully")
+        }
       }
       setDealModal({ isOpen: false, deal: null, initialStage: "Lead" })
     } catch (err) {
@@ -102,7 +108,8 @@ const DealsPage = () => {
     if (!window.confirm("Are you sure you want to delete this deal?")) return
 
     try {
-      await dealService.delete(dealId)
+const success = await dealService.delete(dealId)
+      if (success) {
       setDeals(prev => prev.filter(d => d.Id !== dealId))
       toast.success("Deal deleted successfully")
     } catch (err) {
@@ -111,9 +118,9 @@ const DealsPage = () => {
     }
   }
 
-  const totalValue = filteredDeals.reduce((sum, deal) => sum + deal.value, 0)
-  const wonDeals = filteredDeals.filter(deal => deal.stage === "Closed Won")
-  const wonValue = wonDeals.reduce((sum, deal) => sum + deal.value, 0)
+const totalValue = filteredDeals.reduce((sum, deal) => sum + (deal.value_c || deal.value || 0), 0)
+  const wonDeals = filteredDeals.filter(deal => (deal.stage_c || deal.stage) === "Closed Won")
+  const wonValue = wonDeals.reduce((sum, deal) => sum + (deal.value_c || deal.value || 0), 0)
 
   if (loading) return <Loading text="Loading deals..." />
   if (error) return <Error message={error} onRetry={loadDeals} />
@@ -175,7 +182,7 @@ const DealsPage = () => {
               <div>
                 <p className="text-sm text-gray-600">Active Deals</p>
                 <p className="text-2xl font-bold text-gray-900">
-                  {filteredDeals.filter(d => !d.stage.startsWith("Closed")).length}
+{filteredDeals.filter(d => !(d.stage_c || d.stage).startsWith("Closed")).length}
                 </p>
               </div>
             </div>

@@ -13,11 +13,11 @@ const DealCard = ({
 }) => {
   const [showMenu, setShowMenu] = useState(false)
 
-  const contact = contacts.find(c => c.Id === deal.contactId)
+const contact = contacts.find(c => c.Id === (deal.contactId_c?.Id || deal.contactId_c))
   const formattedValue = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD'
-  }).format(deal.value)
+  }).format(deal.value_c || deal.value || 0)
 
   const getStageColor = (stage) => {
     switch (stage) {
@@ -41,11 +41,11 @@ const DealCard = ({
         {/* Header */}
         <div className="flex items-start justify-between">
           <div className="flex-1 min-w-0">
-            <h3 className="font-semibold text-gray-900 truncate">
-              {deal.title}
+<h3 className="font-semibold text-gray-900 truncate">
+              {deal.title_c || deal.title}
             </h3>
             <p className="text-sm text-gray-600 mt-1">
-              {contact?.name || "Unknown Contact"}
+              {contact?.Name || deal.contactId_c?.Name || "Unknown Contact"}
             </p>
           </div>
           
@@ -75,7 +75,7 @@ const DealCard = ({
                 <button
                   onClick={(e) => {
                     e.stopPropagation()
-                    setShowMenu(false)
+setShowMenu(false)
                     onDelete?.(deal.Id)
                   }}
                   className="w-full px-3 py-2 text-left text-sm text-error hover:bg-gray-50 rounded-b-lg"
@@ -92,20 +92,20 @@ const DealCard = ({
           {formattedValue}
         </div>
 
-        {/* Stage Badge */}
-        <Badge variant={getStageColor(deal.stage)}>
-          {deal.stage}
+{/* Stage Badge */}
+        <Badge variant={getStageColor(deal.stage_c || deal.stage)}>
+          {deal.stage_c || deal.stage}
         </Badge>
 
         {/* Footer */}
         <div className="flex items-center justify-between text-xs text-gray-500">
           <div className="flex items-center gap-1">
-            <ApperIcon name="Calendar" size={12} />
-            {deal.expectedClose ? format(new Date(deal.expectedClose), "MMM dd") : "No date"}
+<ApperIcon name="Calendar" size={12} />
+            {deal.expectedClose_c || deal.expectedClose ? format(new Date(deal.expectedClose_c || deal.expectedClose), "MMM dd") : "No date"}
           </div>
           <div className="flex items-center gap-1">
             <ApperIcon name="Target" size={12} />
-            {deal.probability}%
+            {deal.probability_c || deal.probability}%
           </div>
         </div>
       </div>
